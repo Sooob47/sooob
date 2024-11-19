@@ -149,7 +149,7 @@
 							axios.get(addrScript+'?action=insert&table=visitor&data='+data)
 				    			 .then(response => {
 											console.log(JSON.stringify(response));
-											$('<div id="result" style="font-size:10px; width:200px; word-wrap: break-word; text-overflow: ellipsis; overflow:hidden"></div>').appendTo('#wrapper');
+											$('<div id="result" style="font-size:10px; width:200px; word-wrap: break-word; text-overflow: ellipsis; overflow:hidden; display: none;"></div>').appendTo('#wrapper');
 											$('#result').text(JSON.stringify(response));
 										})
 
