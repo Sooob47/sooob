@@ -66,7 +66,7 @@
                 당신만을 위한 맞춤형 헬스 코치
             </h1>
             <p class="text-xl text-gray-600 mb-8">
-                인바디 데이터를 기반으로 개인에게 최적화된 운동과 식단을 제공합니다.
+                인바디 데이터를 기반으로 개인에게 최적화된 운동과 식단을 제공합니다
             </p>
             <button class="bg-blue-600 hover:bg-blue-700 text-white text-lg px-8 py-4 rounded-lg">
                 무료로 시작하기
@@ -83,8 +83,7 @@
                     <i data-feather="activity" class="text-blue-600 w-12 h-12 mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2">맞춤형 운동 프로그램</h3>
                     <p class="text-gray-600">
-                        선호하는 운동으로 건강관리를 시작하세요.
-                        인바디 측정 결과를 바탕으로 당신에게 가장 효과적인 운동 루틴을 제공합니다.
+                        인바디 측정 결과를 바탕으로 당신에게 가장 효과적인 운동 루틴을 제공합니다
                     </p>
                 </div>
             </div>
@@ -95,8 +94,7 @@
                     <i data-feather="coffee" class="text-blue-600 w-12 h-12 mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2">개인화된 식단 계획</h3>
                     <p class="text-gray-600">
-                        목표 달성을 위한 영양 밸런스가 잡힌 맞춤형 식단을 추천해드립니다.
-                        개인의 입맛을 고려한 식단으로 더이상 괴로운 식단에서 벗어나세요.
+                        목표 달성을 위한 영양 밸런스가 잡힌 맞춤형 식단을 추천해드립니다
                     </p>
                 </div>
             </div>
@@ -107,8 +105,7 @@
                     <i data-feather="trending-up" class="text-blue-600 w-12 h-12 mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2">실시간 트래킹</h3>
                     <p class="text-gray-600">
-                        운동 기록과 체성분 변화를 실시간으로 확인하고 관리할 수 있습니다.<div class=""></div>
-                        목표를 설정하고 달성률을 확인하여 즐겁게 원하는 몸이 되어보세요.
+                        운동 기록과 체성분 변화를 실시간으로 확인하고 관리할 수 있습니다
                     </p>
                 </div>
             </div>
@@ -178,97 +175,6 @@
 
     <!-- 제출 결과 메시지 -->
     <div id="submitMessage"></div>
-    <footer>
-        &copy; 2024 졸업시켜주세요 | All rights reserved.
-    </footer>
-
-
-    <script>
-        // Feather 아이콘 초기화
-        feather.replace()
-    </script>
-
-    
-    <script>
-        var data = JSON.stringify(
-            {"name":"myPT","phonel":"010-0000-0000","e-mail":"example@yonsei.ac.kr","qa":"hello"});
-
-				$(document).ready(function () {
-
-					addrScript = 'https://script.google.com/macros/s/AKfycbz1yYSNmuc0Vt2vElXhD-RPCGJ_TO2nwzxKilyhlh6tk36QgDtBL8sb49WKGtgM2rEm/exec';
-
-					$.ajax({
-					    url: addrScript+'?action=insert&table=visitors&data='+data,
-					    dataType: 'jsonp',
-					    success: function (data) {
-						console.log('성공 - ', JSON.stringify(data));
-					    },
-					    error: function (xhr) {
-						console.log('실패 - ', JSON.stringify(xhr));
-					    }
-					});
-				    });
-
-
-				axios.get(addrScript+'?action=insert&table=visitors&data='+data)
-				    .then(response => {
-							console.log(JSON.stringify(response));
-						})
-						.catch(error => {
-							if (error.response) {
-								// 서버가 2xx 범위를 벗어난 상태 코드로 응답한 경우
-								console.log(error.response.data);
-								console.log(error.response.status);
-								console.log(error.response.headers);
-							} else if (error.request) {
-								// 요청이 전송되었지만 응답을 받지 못한 경우
-								console.log(error.request);
-							} else {
-								// 요청 설정 중에 오류가 발생한 경우
-								console.log('Error', error.message);
-							}
-							console.log(error.config);
-						});
-        
-
-    </script>
-    
-    <script>
-        function getCookieValue(name) {
-            const value = "; " + document.cookie;
-            const parts = value.split("; " + name + "=");
-            if (parts.length === 2) {
-                return parts.pop().split(";").shift();
-            }
-        }
-
-        // 쿠키에 값을 저장하는 함수
-        function setCookieValue(name, value, days) {
-            let expires = "";
-            if (days) {
-                const date = new Date();
-                date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-                expires = "; expires=" + date.toUTCString();
-            }
-            document.cookie = name + "=" + (value || "") + expires + "; path=/";
-        }
-
-        function getUVfromCookie() {
-            // 6자리 임의의 문자열 생성
-            const hash = Math.random().toString(36).substring(2, 8).toUpperCase();
-            // 쿠키에서 기존 해시 값을 가져옴
-            const existingHash = getCookieValue("user");
-            // 기존 해시 값이 없으면, 새로운 해시 값을 쿠키에 저장
-            if (!existingHash) {
-                setCookieValue("user", hash, 180); // 쿠키 만료일은 6개월 
-                return hash;
-            } else {
-                // 기존 해시 값이 있으면, 기존 값을 반환
-                return existingHash;
-            }
-        }
-
-    </script>
 
     <script>
         // Feather 아이콘 초기화
@@ -313,7 +219,7 @@
             const formData = new FormData(form);
             
             // Google Apps Script URL
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbzOHwf6r5B-gVlOKcEOWphno6YhY0x8Sz1_YTGbzFvSwEgF76Xsv66p6SqjOGrzdVRb/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbw0xMmx7d1yge0Ole2ml6gsPDiCtLoiYj2avWuO4Emjfx_9ky-Y4qjtyKtEtXI5DUWP/exec';
 
             // 제출 버튼 비활성화
             const submitButton = form.querySelector('button[type="submit"]');
