@@ -2,7 +2,7 @@
 <html lang="ko">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <head>
-    <!-- Previous head content remains the same until script section -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My PT - 맞춤형 헬스 코치</title>
@@ -130,7 +130,7 @@
                         </label>
                         <input type="text" id="submit-name" name="name" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                            placeholder="이름을 입력하세요">
+                            placeholder="박피티">
                     </div>
 
                     <!-- 전화번호 입력 -->
@@ -151,7 +151,7 @@
                     </label>
                     <input type="email" id="email" name="email" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="example@email.com">
+                        placeholder="example@yonsei.ac.ck">
                     <div id="emailError" class="error-message" style="display: none;">
                         정확한 이메일을 입력해주세요
                     </div>
@@ -164,7 +164,7 @@
                     </label>
                     <textarea id="qa" name="qa" rows="4" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="문의하실 내용을 입력해주세요"></textarea>
+                        placeholder="소중한 의견을 남겨주세요"></textarea>
                 </div>
 
                 <!-- 제출 버튼 -->
@@ -184,77 +184,88 @@
         &copy; 2024 졸업시켜주세요 | All rights reserved.
     </footer>
 
-    <!-- Rest of the HTML remains identical until the script section -->
-    
+
     <script>
         // Feather 아이콘 초기화
         feather.replace()
+    </script>
 
-        $(document).ready(function() {
-            var addrScript = 'https://script.google.com/macros/s/AKfycbw0xMmx7d1yge0Ole2ml6gsPDiCtLoiYj2avWuO4Emjfx_9ky-Y4qjtyKtEtXI5DUWP/exec';
+    <script>
+        var data = JSON.stringify(
+					{"name": "name",
+                    "phone": "010-0000-0000",
+					"email":"example@yonsei.ac.kr", 
+					"qa":"hello" 
+					});
 
-            // 초기 방문자 데이터 전송
-            var initialData = JSON.stringify({
-                "name": "name",
-                "phone": "010-0000-0000",
-                "email": "example@yonsei.ac.kr",
-                "qa": "hello"
-            });
+            $(document).ready(function () {
 
-            $.ajax({
-                url: addrScript + '?action=insert&table=visitors&data=' + initialData,
-                dataType: 'jsonp',
-                success: function(response) {
-                    console.log('성공 - ', JSON.stringify(response));
-                },
-                error: function(xhr) {
+                addrScript = 'https://script.google.com/macros/s/AKfycbw0xMmx7d1yge0Ole2ml6gsPDiCtLoiYj2avWuO4Emjfx_9ky-Y4qjtyKtEtXI5DUWP/exec';
+
+                $.ajax({
+                    url: addrScript+'?action=insert&table=visitors&data='+data,
+                    dataType: 'jsonp',
+                    success: function (data) {
+                    console.log('성공 - ', JSON.stringify(data));
+                    },
+                    error: function (xhr) {
                     console.log('실패 - ', JSON.stringify(xhr));
-                }
-            });
+                    }
+                });
+                });
 
-            // 방문자 정보 전송
-            var visitorData = JSON.stringify({
-                "name": getUVfromCookie(),
-                "phone": window.location.href,
-                "email": ip,
-                "qa": document.referrer
-            });
 
-            $.ajax({
-                url: addrScript + '?action=insert&table=visitors&data=' + visitorData,
-                dataType: 'jsonp',
-                success: function(response) {
-                    console.log('성공 - ', JSON.stringify(response));
-                },
-                error: function(xhr) {
-                    console.log('실패 - ', JSON.stringify(xhr));
-                }
-            });
+            axios.get(addrScript+'?action=insert&table=visitors&data='+data)
+                .then(response => {
+                        console.log(JSON.stringify(response));
+                    })
+                    .catch(error => {
+                        if (error.response) {
+                            // 서버가 2xx 범위를 벗어난 상태 코드로 응답한 경우
+                            console.log(error.response.data);
+                            console.log(error.response.status);
+                            console.log(error.response.headers);
+                        } else if (error.request) {
+                            // 요청이 전송되었지만 응답을 받지 못한 경우
+                            console.log(error.request);
+                        } else {
+                            // 요청 설정 중에 오류가 발생한 경우
+                            console.log('Error', error.message);
+                        }
+                        console.log(error.config);
+                    });
 
-            // 문의하기 폼 제출
-            $("#submit").on("click", function() {
+            var data = JSON.stringify({"name": name,
+            "phone":phone, 
+            "email":email, 
+            "qa":qa}
+            );
+
+
+            $("#submit").on("click", function () {
                 const name = $("#submit-name").val();
                 const phone = $("#submit-phone").val();
                 const email = $("#submit-email").val();
                 const qa = $("#submit-qa").val();
+                
 
                 function validateEmail(email) {
                     var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
                     return re.test(email);
                 }
-
+        
                 if (email == '' || !validateEmail(email)) {
                     alert("이메일이 유효하지 않아 알림을 드릴 수가 없습니다. ");
                     return;
                 }
-
-                var formData = JSON.stringify({
+        
+                var finalData = JSON.stringify({
                     "name": name,
                     "phone": phone,
                     "email": email,
                     "qa": qa
-                });
-
+                })
+        
                 $.ajax({
                     url: 'https://script.google.com/macros/s/AKfycbzrw1Ouk9-LeF0H2eEzzI-4RWOgQp5O0YvNQTfzCkI4BcIDe0eJDQ0whbCr2svCnh-9XA/exec' + formData,
                     dataType: 'jsonp',
@@ -270,8 +281,8 @@
                         console.log('실패 - ', JSON.stringify(xhr));
                     }
                 });
-            });
-        });
+            })
     </script>
+        
 </body>
 </html>
