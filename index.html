@@ -201,74 +201,41 @@
                     const addrScript = 'https://script.google.com/macros/s/AKfycbxLUrXB0gMINansvZqSs1oxAn1vkDWUWVyyvisR-FS9hDallJJHTeKBMaYmXQKnQTDa/exec';
 
                     $(document).ready(function () {
-                        // 초기 데이터 설정
-                        var initialData = JSON.stringify({
-                            "name": "name",
-                            "phone": "010-0000-0000",
-                            "email": "example@yonsei.ac.kr",
-                            "qa": "hello"
-                        });
-                    
-                        // AJAX 요청
-                        $.ajax({
-                            url: addrScript + '?action=insert&table=visitors&data=' + initialData,
-                            dataType: 'jsonp',
-                            success: function (data) {
-                                console.log('성공 - ', JSON.stringify(data));
-                            },
-                            error: function (xhr) {
-                                console.log('실패 - ', JSON.stringify(xhr));
-                            }
-                        });
-                    
-                        // Axios 요청
-                        axios.get(addrScript + '?action=insert&table=visitors&data=' + initialData)
-                            .then(response => {
-                                console.log(JSON.stringify(response));
-                            })
-                            .catch(error => {
-                                if (error.response) {
-                                    console.log(error.response.data);
-                                    console.log(error.response.status);
-                                    console.log(error.response.headers);
-                                } else if (error.request) {
-                                    console.log(error.request);
-                                } else {
-                                    console.log('Error', error.message);
-                                }
-                                console.log(error.config);
-                            });
-                    
-                        // 폼 제출 이벤트 핸들러
-                        $("#submit").on("click", function () {
+                        $("#contactForm").on("submit", function (e) {
+                            e.preventDefault(); // 기본 폼 제출 동작 방지
+                            
                             const name = $("#submit-name").val();
                             const phone = $("#submit-phone").val();
                             const email = $("#submit-email").val();
                             const qa = $("#submit-qa").val();
-                    
+                
+                            // 이메일 유효성 검사
                             function validateEmail(email) {
                                 var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
                                 return re.test(email);
                             }
-                    
-                            if (email == '' || !validateEmail(email)) {
-                                alert("이메일이 유효하지 않아 알림을 드릴 수가 없습니다. ");
+                
+                            if (email === '' || !validateEmail(email)) {
+                                alert("이메일이 유효하지 않습니다.");
                                 return;
                             }
-                    
-                            var finalData = JSON.stringify({
+                
+                            // 데이터 준비
+                            var formData = JSON.stringify({
                                 "name": name,
                                 "phone": phone,
                                 "email": email,
                                 "qa": qa
                             });
-                    
+                
+                            // 구글 시트로 데이터 전송
                             $.ajax({
-                                url: 'https://script.google.com/macros/s/AKfycbxLUrXB0gMINansvZqSs1oxAn1vkDWUWVyyvisR-FS9hDallJJHTeKBMaYmXQKnQTDa/exec' + finalData,
+                                url: addrScript + '?action=insert&table=visitors&data=' + formData,
                                 dataType: 'jsonp',
                                 success: function(response) {
                                     console.log('성공 - ', JSON.stringify(response));
-                                    alert(JSON.stringify(response));
+                                    alert("문의가 성공적으로 제출되었습니다!");
+                                    // 폼 초기화
                                     $('#submit-name').val('');
                                     $('#submit-phone').val('');
                                     $('#submit-email').val('');
@@ -276,6 +243,7 @@
                                 },
                                 error: function(xhr) {
                                     console.log('실패 - ', JSON.stringify(xhr));
+                                    alert("문의 제출 중 오류가 발생했습니다. 다시 시도해 주세요.");
                                 }
                             });
                         });
