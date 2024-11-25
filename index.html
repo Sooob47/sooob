@@ -151,7 +151,7 @@
                     </label>
                     <input type="email" id="email" name="email" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                        placeholder="example@yonsei.ac.ck">
+                        placeholder="example@yonsei.ac.kr">
                     <div id="emailError" class="error-message" style="display: none;">
                         정확한 이메일을 입력해주세요
                     </div>
@@ -198,92 +198,89 @@
 					"qa":"hello" 
 					});
 
-            $(document).ready(function () {
+                    const addrScript = 'https://script.google.com/macros/s/AKfycbw0xMmx7d1yge0Ole2ml6gsPDiCtLoiYj2avWuO4Emjfx_9ky-Y4qjtyKtEtXI5DUWP/exec';
 
-                addrScript = 'https://script.google.com/macros/s/AKfycbw0xMmx7d1yge0Ole2ml6gsPDiCtLoiYj2avWuO4Emjfx_9ky-Y4qjtyKtEtXI5DUWP/exec';
-
-                $.ajax({
-                    url: addrScript+'?action=insert&table=visitors&data='+data,
-                    dataType: 'jsonp',
-                    success: function (data) {
-                    console.log('성공 - ', JSON.stringify(data));
-                    },
-                    error: function (xhr) {
-                    console.log('실패 - ', JSON.stringify(xhr));
-                    }
-                });
-                });
-
-
-            axios.get(addrScript+'?action=insert&table=visitors&data='+data)
-                .then(response => {
-                        console.log(JSON.stringify(response));
-                    })
-                    .catch(error => {
-                        if (error.response) {
-                            // 서버가 2xx 범위를 벗어난 상태 코드로 응답한 경우
-                            console.log(error.response.data);
-                            console.log(error.response.status);
-                            console.log(error.response.headers);
-                        } else if (error.request) {
-                            // 요청이 전송되었지만 응답을 받지 못한 경우
-                            console.log(error.request);
-                        } else {
-                            // 요청 설정 중에 오류가 발생한 경우
-                            console.log('Error', error.message);
-                        }
-                        console.log(error.config);
+                    $(document).ready(function () {
+                        // 초기 데이터 설정
+                        var initialData = JSON.stringify({
+                            "name": "name",
+                            "phone": "010-0000-0000",
+                            "email": "example@yonsei.ac.kr",
+                            "qa": "hello"
+                        });
+                    
+                        // AJAX 요청
+                        $.ajax({
+                            url: addrScript + '?action=insert&table=visitors&data=' + initialData,
+                            dataType: 'jsonp',
+                            success: function (data) {
+                                console.log('성공 - ', JSON.stringify(data));
+                            },
+                            error: function (xhr) {
+                                console.log('실패 - ', JSON.stringify(xhr));
+                            }
+                        });
+                    
+                        // Axios 요청
+                        axios.get(addrScript + '?action=insert&table=visitors&data=' + initialData)
+                            .then(response => {
+                                console.log(JSON.stringify(response));
+                            })
+                            .catch(error => {
+                                if (error.response) {
+                                    console.log(error.response.data);
+                                    console.log(error.response.status);
+                                    console.log(error.response.headers);
+                                } else if (error.request) {
+                                    console.log(error.request);
+                                } else {
+                                    console.log('Error', error.message);
+                                }
+                                console.log(error.config);
+                            });
+                    
+                        // 폼 제출 이벤트 핸들러
+                        $("#submit").on("click", function () {
+                            const name = $("#submit-name").val();
+                            const phone = $("#submit-phone").val();
+                            const email = $("#submit-email").val();
+                            const qa = $("#submit-qa").val();
+                    
+                            function validateEmail(email) {
+                                var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+                                return re.test(email);
+                            }
+                    
+                            if (email == '' || !validateEmail(email)) {
+                                alert("이메일이 유효하지 않아 알림을 드릴 수가 없습니다. ");
+                                return;
+                            }
+                    
+                            var finalData = JSON.stringify({
+                                "name": name,
+                                "phone": phone,
+                                "email": email,
+                                "qa": qa
+                            });
+                    
+                            $.ajax({
+                                url: 'https://script.google.com/macros/s/AKfycbzrw1Ouk9-LeF0H2eEzzI-4RWOgQp5O0YvNQTfzCkI4BcIDe0eJDQ0whbCr2svCnh-9XA/exec' + finalData,
+                                dataType: 'jsonp',
+                                success: function(response) {
+                                    console.log('성공 - ', JSON.stringify(response));
+                                    alert(JSON.stringify(response));
+                                    $('#submit-name').val('');
+                                    $('#submit-phone').val('');
+                                    $('#submit-email').val('');
+                                    $('#submit-qa').val('');
+                                },
+                                error: function(xhr) {
+                                    console.log('실패 - ', JSON.stringify(xhr));
+                                }
+                            });
+                        });
                     });
-
-            var data = JSON.stringify({"name": name,
-            "phone":phone, 
-            "email":email, 
-            "qa":qa}
-            );
-
-
-            $("#submit").on("click", function () {
-                const name = $("#submit-name").val();
-                const phone = $("#submit-phone").val();
-                const email = $("#submit-email").val();
-                const qa = $("#submit-qa").val();
-                
-
-                function validateEmail(email) {
-                    var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-                    return re.test(email);
-                }
-        
-                if (email == '' || !validateEmail(email)) {
-                    alert("이메일이 유효하지 않아 알림을 드릴 수가 없습니다. ");
-                    return;
-                }
-        
-                var finalData = JSON.stringify({
-                    "name": name,
-                    "phone": phone,
-                    "email": email,
-                    "qa": qa
-                })
-        
-                $.ajax({
-                    url: 'https://script.google.com/macros/s/AKfycbzrw1Ouk9-LeF0H2eEzzI-4RWOgQp5O0YvNQTfzCkI4BcIDe0eJDQ0whbCr2svCnh-9XA/exec' + formData,
-                    dataType: 'jsonp',
-                    success: function(response) {
-                        console.log('성공 - ', JSON.stringify(response));
-                        alert(JSON.stringify(response));
-                        $('#submit-name').val('');
-                        $('#submit-phone').val('');
-                        $('#submit-email').val('');
-                        $('#submit-qa').val('');
-                    },
-                    error: function(xhr) {
-                        console.log('실패 - ', JSON.stringify(xhr));
-                    }
-                });
-            })
-        </script>
-
+                </script>
         
 </body>
 </html>
