@@ -138,7 +138,7 @@
                         <label for="phone" class="block text-sm font-medium text-gray-700 mb-2">
                             전화번호
                         </label>
-                        <input type="tel" id="phone" name="phone" required
+                        <input type="tel" id="submit-phone" name="phone" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="010-0000-0000">
                     </div>
@@ -149,7 +149,7 @@
                     <label for="email" class="block text-sm font-medium text-gray-700 mb-2">
                         e-mail
                     </label>
-                    <input type="email" id="email" name="email" required
+                    <input type="email" id="submit-email" name="email" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="example@yonsei.ac.kr">
                     <div id="emailError" class="error-message" style="display: none;">
@@ -162,7 +162,7 @@
                     <label for="qa" class="block text-sm font-medium text-gray-700 mb-2">
                         문의내용
                     </label>
-                    <textarea id="qa" name="qa" rows="4" required
+                    <textarea id="submit-qa" name="qa" rows="4" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="소중한 의견을 남겨주세요"></textarea>
                 </div>
@@ -198,7 +198,7 @@
 					"qa":"hello" 
 					});
 
-                    const addrScript = 'https://script.google.com/macros/s/AKfycbyffM8oEog5d03CLW6r63_jjJtuZyKUe2M_PSXKHVYzltA3T--G28NxUCRF4n3bo3vi/exec';
+                    const addrScript = 'https://script.google.com/macros/s/AKfycbxLUrXB0gMINansvZqSs1oxAn1vkDWUWVyyvisR-FS9hDallJJHTeKBMaYmXQKnQTDa/exec';
 
                     $(document).ready(function () {
                         // 초기 데이터 설정
@@ -264,7 +264,7 @@
                             });
                     
                             $.ajax({
-                                url: 'https://script.google.com/macros/s/AKfycbyffM8oEog5d03CLW6r63_jjJtuZyKUe2M_PSXKHVYzltA3T--G28NxUCRF4n3bo3vi/exec' + finalData,
+                                url: 'https://script.google.com/macros/s/AKfycbxLUrXB0gMINansvZqSs1oxAn1vkDWUWVyyvisR-FS9hDallJJHTeKBMaYmXQKnQTDa/exec' + finalData,
                                 dataType: 'jsonp',
                                 success: function(response) {
                                     console.log('성공 - ', JSON.stringify(response));
